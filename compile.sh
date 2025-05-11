@@ -1,0 +1,1 @@
+ west build --pristine -b roc_rk3588 samples/hello_world
