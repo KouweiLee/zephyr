@@ -14,8 +14,8 @@
 	compatible = "rockchip,rk3588";
 
 	chosen {
-		zephyr,console = &uart2;
-		zephyr,shell-uart = &uart2;
+		zephyr,console = &uart3;
+		zephyr,shell-uart = &uart3;
 		zephyr,sram = &dram;
 	};
 
@@ -26,7 +26,7 @@
 	};
 };
 
-&uart2 {
+&uart3 {
 	status = "okay";
 	current-speed = <1500000>;
 };
