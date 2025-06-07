@@ -58,7 +58,7 @@ SECTION_SUBSEC_FUNC(TEXT,_reset_section,__reset_prep_c)
 	b	out
 #endif /* CONFIG_ARMV8_R */
 2:
-	/* Disable alignment fault checking, disable D-Cache, I-Cache, MMU for safety */
+	/* Disable alignment fault checking, disable D-Cache, I-Cache, MMU for safety 对el2的操作不会对el1造成影响*/
 	mrs	x0, sctlr_el2
 	mov	x1, #(SCTLR_A_BIT | SCTLR_C_BIT | SCTLR_M_BIT | SCTLR_I_BIT)
 	bic	x0, x0, x1
@@ -106,21 +106,24 @@ out:
  * privileged level. At this point, neither SP_EL0 nor SP_ELx point to a valid
  * area in SRAM.
  */
-
+// 这两行声明了__reset 和 __start两个全局标记，它们本质上地址一样，内容就是下面的汇编。它们是程序的入口
 GTEXT(__reset)
 SECTION_SUBSEC_FUNC(TEXT,_reset_section,__reset)
 
 GTEXT(__start)
 SECTION_SUBSEC_FUNC(TEXT,_reset_section,__start)
 
-#ifdef CONFIG_WAIT_AT_RESET_VECTOR
-resetwait:
-	wfe
-	b       resetwait
-#endif
-
+# #ifdef CONFIG_WAIT_AT_RESET_VECTOR
+# resetwait:
+# 	wfe
+# 	b       resetwait
+# #endif
 	/* Mask all exceptions */
 	msr	DAIFSet, #0xf
+	
+	# mov     x23, #0xfeb50000 
+	# mov     w1, #'A'
+	# strb    w1, [x23]  
 
 #if CONFIG_MP_MAX_NUM_CPUS > 1
 
@@ -201,6 +204,7 @@ boot:
 	 * can be measured. This needs to be done before using the stack
 	 * so that we don't clobber any data.
 	 */
+// 这个可以用作调试，看栈的设置是否合理。
 #ifdef CONFIG_INIT_STACKS
 	mov_imm	x0, CONFIG_ISR_STACK_SIZE
 	sub	x0, sp, x0
