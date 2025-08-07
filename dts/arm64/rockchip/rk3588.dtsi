@@ -94,4 +94,13 @@
 		reg-shift = <2>;
 		status = "disabled";
 	};	
+	
+	uart2: serial@feb50000 {
+		compatible = "rockchip,rk3588-uart", "ns16550";
+		reg = <0xfeb50000 0x100>;
+		interrupts = <GIC_SPI 333 IRQ_TYPE_EDGE IRQ_DEFAULT_PRIORITY>;
+		clock-frequency = <24000000>;
+		reg-shift = <2>;
+		status = "disabled";
+	};	
 };
