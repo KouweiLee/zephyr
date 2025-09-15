@@ -13,8 +13,8 @@
 	compatible = "rockchip,rk3588";
 
 	chosen {
-		zephyr,console = &uart2;
-		zephyr,shell-uart = &uart2;
+		zephyr,console = &uart3;
+		zephyr,shell-uart = &uart3;
 		zephyr,sram = &dram;
 	};
 
@@ -26,11 +26,19 @@
 };
 
 &uart2 {
-	status = "okay";
+	status = "disabled";
 	current-speed = <1500000>;
 };
 
 &uart3 {
-	status = "disabled";
+	status = "okay";
 	current-speed = <115200>;
+};
+
+&cpu0 {
+	status = "disabled";
+};
+
+&cpu1 {
+	status = "disabled";
 };
